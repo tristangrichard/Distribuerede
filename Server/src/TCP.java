@@ -5,32 +5,38 @@ import java.net.Socket;
 
 public class TCP implements Runnable {
 
-	private int port = 5000;
+	private int port;
 	public float average;
 	private ServerSocket connect = null;
 	private Socket client = null;
 	private DataInputStream input = null;
 	public boolean receiving = true;
 
+	public TCP(){
+		this.port = 6000;
+		this.average = 14;
+	}
 	@Override
 	public void run() {
 		startTCP();
 	}
 	// Initializing
 	public void startTCP(){
-		System.out.print("Opening sensor port "+port+"...");
-		this.connect = createSocket();
-		if (connect == null){return;}
-		System.out.print("Waiting for sensor connection...");
-		this.client = getClient(connect);
-		if (client == null){return;}
-		System.out.print("Creating sensor inputstream...");
-		this.input = createInputStream();
-		if (input == null){return;}
-		System.out.println("Gathering sensor data...");
-		getInput(input);
-		close();
-		System.out.println("End of Program");
+		while(receiving){
+			System.out.println("Opening sensor port "+port+"...");
+			this.connect = createSocket();
+			if (connect == null){return;}
+			System.out.println("Waiting for sensor connection...");
+			this.client = getClient(connect);
+			if (client == null){return;}
+			System.out.println("Creating sensor inputstream...");
+			this.input = createInputStream();
+			if (input == null){return;}
+			System.out.println("Gathering sensor data...");
+			getInput(input);
+			close();
+			System.out.println("End of Program");
+		}
 	}
 	// Get input from socket
 	private void getInput(DataInputStream input){
@@ -71,8 +77,8 @@ public class TCP implements Runnable {
 	private ServerSocket createSocket(){
 		ServerSocket connect = null;
 		try {
-			connect = new ServerSocket(port);
-			System.out.println("Done!");
+			connect = new ServerSocket(this.port);
+			System.out.println("Sensor port "+port+" opened!");
 		}
 		catch (IOException e) {
 			System.out.println(e);
@@ -84,7 +90,7 @@ public class TCP implements Runnable {
 		Socket clientSocket = null;
 		try {
 			clientSocket = connect.accept();
-			System.out.println("Client ("+ clientSocket.getRemoteSocketAddress() +") is now connected");
+			System.out.println("Sensor ("+ clientSocket.getRemoteSocketAddress() +") is now connected");
 		}
 		catch (IOException e) {
 			System.out.println(e);

@@ -16,17 +16,13 @@ public class Server {
 		Thread sensor = new Thread(con);
 		Thread client = new Thread(remote);
 		System.out.println("Starting...");
-		while (con.receiving){
-			if (!sensor.isAlive()){
-				sensor.start();
-				System.out.println("Sensor thread started.");
-			}
-			if (!client.isAlive()){
-				client.start();
-				System.out.println("Client thread started.");
-				System.out.println();
-			}
-		}
-		
+
+		System.out.println("Sensor thread starting.");
+		sensor.start();
+
+		System.out.println("Client thread starting.");
+		client.start();
+
+
 	}	
 }
