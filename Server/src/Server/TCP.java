@@ -1,3 +1,4 @@
+package Server;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -6,11 +7,11 @@ import java.net.Socket;
 public class TCP implements Runnable {
 
 	private int port;
-	public float average;
+	private float average;
 	private ServerSocket connect = null;
 	private Socket client = null;
 	private DataInputStream input = null;
-	public boolean receiving = true;
+	private boolean receiving = true;
 
 	public TCP(){
 		this.port = 6000;
@@ -22,10 +23,10 @@ public class TCP implements Runnable {
 	}
 	// Initializing
 	public void startTCP(){
+		System.out.println("Opening sensor port "+port+"...");
+		this.connect = createSocket();
+		if (connect == null){return;}
 		while(receiving){
-			System.out.println("Opening sensor port "+port+"...");
-			this.connect = createSocket();
-			if (connect == null){return;}
 			System.out.println("Waiting for sensor connection...");
 			this.client = getClient(connect);
 			if (client == null){return;}
@@ -35,8 +36,8 @@ public class TCP implements Runnable {
 			System.out.println("Gathering sensor data...");
 			getInput(input);
 			close();
-			System.out.println("End of Program");
 		}
+		closeSocket();
 	}
 	// Get input from socket
 	private void getInput(DataInputStream input){
@@ -103,12 +104,30 @@ public class TCP implements Runnable {
 			System.out.print("Closing sensor connection...");
 			this.input.close();
 			this.client.close();
-			this.connect.close();
 			System.out.println("Done!");
 		} 
 		catch (IOException e) {
 			System.out.print("failed");
 			System.out.println(e);
 		}
+	}
+	// Close socket
+	private void closeSocket(){
+		try{
+			System.out.print("Closing TCP socket...");
+			this.connect.close();
+			System.out.println("Done!");
+		}catch (IOException e) {
+			System.out.print("failed");
+			System.out.println(e);
+		}
+	}
+	// Get average
+	public float getAverage(){
+		return average;
+	}
+	// Set boolean
+	public void setReceiving(){
+		this.receiving = false;
 	}
 }

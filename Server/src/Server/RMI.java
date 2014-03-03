@@ -1,3 +1,4 @@
+package Server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -7,23 +8,23 @@ import java.net.Socket;
 
 public class RMI implements Runnable{
 
-	TCP con;
+	private TCP con;
 	private int port;
 	private ServerSocket connect = null;
 	private Socket client = null;
 	private DataInputStream input = null;
 	private DataOutputStream output = null;
-	public boolean receiving = true;
+	private boolean receiving = true;
 
 	public RMI(TCP con){
 		this.con = con;
 		this.port = 6005;
 	}
 	public void run() {
+		System.out.println("Opening remote port "+port+"...");
+		this.connect = createSocket();
+		if (connect == null){return;}
 		while(receiving){
-			System.out.println("Opening remote port "+port+"...");
-			this.connect = createSocket();
-			if (connect == null){return;}
 			System.out.println("Waiting for remote request...");
 			this.client = getClient(connect);
 			if (client == null){return;}
@@ -34,13 +35,15 @@ public class RMI implements Runnable{
 			getInput(input);
 			close();
 		}
+		closeSocket();
 	}
+	// Sends average temperature
 	private void sendAverage() {
 		System.out.println("Creating remote outputstream...");
 		output = createOutputStream();
 		try{
 			System.out.println("Sending temperature to remote...");
-			byte temp = (byte) (con.average*10-140);
+			byte temp = (byte) (con.getAverage()*10-140);
 			output.write(temp);
 			output.flush();
 			System.out.println("Temperature sent to remote");
@@ -49,6 +52,7 @@ public class RMI implements Runnable{
 			System.out.println(e.getMessage());
 		}
 	}
+	// Get input from socket
 	private void getInput(DataInputStream input){
 
 		char temp = 'a';
@@ -117,18 +121,31 @@ public class RMI implements Runnable{
 	// Closes connection
 	private void close(){
 		try {
-			System.out.print("Closing remote connection...");
+			System.out.print("Closing remote client connection...");
 			this.input.close();
 			this.output.close();
 			this.client.close();
-			this.connect.close();
 			System.out.println("Done!");
-		} 
-		catch (IOException e) {
+		}catch (IOException e) {
 			System.out.print("failed");
 			System.out.println(e);
 		}
 
+	}
+	// Close socket
+	private void closeSocket(){
+		try{
+			System.out.print("Closing remote socket...");
+			this.connect.close();
+			System.out.println("Done!");
+		}catch (IOException e) {
+			System.out.print("failed");
+			System.out.println(e);
+		}
+	}
+	// Set boolean
+	public void setReceiving(){
+		this.receiving = false;
 	}
 
 }
