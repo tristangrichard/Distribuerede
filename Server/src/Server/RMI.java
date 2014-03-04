@@ -127,7 +127,7 @@ public class RMI implements Runnable{
 			this.client.close();
 			System.out.println("Done!");
 		}catch (IOException e) {
-			System.out.print("failed");
+			System.out.println("failed");
 			System.out.println(e);
 		}
 
@@ -139,7 +139,7 @@ public class RMI implements Runnable{
 			this.connect.close();
 			System.out.println("Done!");
 		}catch (IOException e) {
-			System.out.print("failed");
+			System.out.println("failed");
 			System.out.println(e);
 		}
 	}

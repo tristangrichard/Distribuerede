@@ -107,7 +107,7 @@ public class TCP implements Runnable {
 			System.out.println("Done!");
 		} 
 		catch (IOException e) {
-			System.out.print("failed");
+			System.out.println("failed");
 			System.out.println(e);
 		}
 	}
@@ -118,7 +118,7 @@ public class TCP implements Runnable {
 			this.connect.close();
 			System.out.println("Done!");
 		}catch (IOException e) {
-			System.out.print("failed");
+			System.out.println("failed");
 			System.out.println(e);
 		}
 	}
