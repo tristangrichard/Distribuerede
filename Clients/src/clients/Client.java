@@ -13,7 +13,7 @@ public class Client {
 
 	public static void main(String[] args) throws IOException {
 		try {
-			Socket s = new Socket("10.16.163.98", 6000);
+			Socket s = new Socket("10.16.163.98", 5000);
 			//PrintWriter out = new PrintWriter(s.getOutputStream(), true);
 			DataOutputStream out = new DataOutputStream(s.getOutputStream());
 			

@@ -13,7 +13,7 @@ public class Remoteclient {
 		DataInputStream in = null;
 		Socket s = null;
 		try {
-			s = new Socket("10.16.163.98", 6005);
+			s = new Socket("10.16.163.98", 5005);
 			out = new DataOutputStream(s.getOutputStream());
 			in = new DataInputStream(s.getInputStream());
 			try {
