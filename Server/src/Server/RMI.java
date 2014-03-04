@@ -57,17 +57,20 @@ public class RMI implements Runnable{
 
 		char temp = 'a';
 		byte in = 0;
-		try {
-			in = (byte)input.readUnsignedByte();
-			temp = (char) in;
-		} catch (IOException e) {
-			receiving = false;
-		}
-		if (temp == 'g'){
-			sendAverage();
-		}
-		if (temp == 'q'){
-			receiving = false;
+		while(temp != 's'){
+			try {
+				in = (byte)input.readUnsignedByte();
+				temp = (char) in;
+			} catch (IOException e) {
+				receiving = false;
+			}
+			if (temp == 'g'){
+				sendAverage();
+			}
+			if (temp == 'q'){
+				receiving = false;
+				break;
+			}
 		}
 	}
 	// Creates a Socket
