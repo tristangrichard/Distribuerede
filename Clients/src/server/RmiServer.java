@@ -1,6 +1,7 @@
 package server;
 import java.io.File;
 import java.rmi.*;
+import java.rmi.registry.LocateRegistry;
 
 /**
  * Server program.
@@ -10,6 +11,7 @@ public class RmiServer {
 		TCP con = new TCP();
 		// Setup RMI
 		try{
+			LocateRegistry.createRegistry(1099);
 			File f1 = new File("./bin/");
 			String codeBase=f1.getAbsoluteFile().toURI().toURL().toString();
 			System.setProperty("java.rmi.server.codebase", codeBase);		
@@ -18,6 +20,7 @@ public class RmiServer {
 		}
 		catch (Exception e){
 			System.out.println("Errors: "+ e);
+			return;
 		}
 		// Start thread for sensor
 		con.startTCP();
