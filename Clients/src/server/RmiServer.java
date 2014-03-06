@@ -8,7 +8,6 @@ public class RmiServer {
 		File f1 = new File("./bin/");
 		String codeBase=f1.getAbsoluteFile().toURI().toURL().toString();
 		System.setProperty("java.rmi.server.codebase", codeBase);		
-		
 		RmiIntf r = new AverageTemp(con);
 		Naming.rebind("rmi://localhost:1099/RMIServer", r);
 		

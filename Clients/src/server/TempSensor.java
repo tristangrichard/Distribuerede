@@ -3,6 +3,7 @@ package server;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 
 
 /**
@@ -13,10 +14,14 @@ public class TempSensor {
 
 	public static void main(String[] args) throws IOException {
 		try {
-			Socket s = new Socket("192.168.1.22", 5000);
+			System.out.println("Skriv serverens IP adresse (brug localhost hvis det er lokalt): ");
+			Scanner scan = new Scanner(System.in);
+			String ip;
+			ip = scan.next();
+			Socket s = new Socket(ip, 5000);
 			//PrintWriter out = new PrintWriter(s.getOutputStream(), true);
 			DataOutputStream out = new DataOutputStream(s.getOutputStream());
-			
+			scan.close();
 			try {
 				while (true) {
 					Thread.currentThread();
