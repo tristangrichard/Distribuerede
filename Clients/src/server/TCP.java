@@ -51,7 +51,8 @@ public class TCP implements Runnable {
 				temp = (float) in;
 				temp = (temp+140)/10;
 			} catch (IOException e) {
-				receiving = false;
+				System.out.println("Connection to sensor: Lost.");
+				return;
 			}
 
 			if (temp >= 14 && temp <=24){

@@ -1,12 +1,12 @@
 package server;
 import java.rmi.*;
 import java.rmi.server.*;
-public class AverageTemp extends UnicastRemoteObject implements RmiIntf {
+public class RmiMethods extends UnicastRemoteObject implements RmiInterface {
 
 	private static final long serialVersionUID = 1L;
 	private TCP con;
 	
-	protected AverageTemp(TCP con) throws RemoteException {
+	protected RmiMethods(TCP con) throws RemoteException {
 		super();
 		this.con = con;
 	}
