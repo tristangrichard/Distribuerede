@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Scanner;
 
 public class Server {
@@ -18,6 +19,7 @@ public class Server {
 		// Instance needed
 		TCP con = new TCP();
 		RMI remote = null;
+		Registry registry = null;
 		while (remote == null){
 			try {
 				remote = new RMI(con);
@@ -26,32 +28,32 @@ public class Server {
 				e.printStackTrace();
 			}
 		}
-		 try { //special exception handler for registry creation
-	            LocateRegistry.createRegistry(1099); 
-	            System.out.println("java RMI registry created.");
-	        } catch (RemoteException e) {
-	            //do nothing, error means registry already exists
-	            System.out.println("java RMI registry already exists.");
-	        }
-	 
-	        // Bind this object instance to the name "RmiServer"
-	        try {
-				Naming.rebind("//localhost/RMI", remote);
-			} catch (RemoteException | MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	        System.out.println("PeerServer bound in registry");
+		try { //special exception handler for registry creation
+			registry = LocateRegistry.createRegistry(2009); 
+			System.out.println("java RMI registry created.");
+		} catch (RemoteException e) {
+			//do nothing, error means registry already exists
+			System.out.println("java RMI registry already exists.");
+		}
+
+		// Bind this object instance to the name "RmiServer"
+		try {
+			registry.rebind("//localhost/RMI", remote);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("PeerServer bound in registry");
 
 		// Create Threads
 		Thread sensor = new Thread(con);
-//		Thread client = new Thread(remote);
+		//		Thread client = new Thread(remote);
 		System.out.println("Starting...");
 		// Starting Threads
 		System.out.println("Sensor thread starting.");
 		sensor.start();
-//		System.out.println("Client thread starting.");
-//		client.start();
+		//		System.out.println("Client thread starting.");
+		//		client.start();
 		// Waiting for input
 		char command = 'r';
 		Scanner scan = new Scanner(System.in);
@@ -65,8 +67,8 @@ public class Server {
 		scan.close();
 		// Waiting for Threads to terminate
 		System.out.println("Waiting for threads to teminate...");
-//		while(!sensor.getState().equals(Thread.State.TERMINATED) ||
-//				!client.getState().equals(Thread.State.TERMINATED));
+		//		while(!sensor.getState().equals(Thread.State.TERMINATED) ||
+		//				!client.getState().equals(Thread.State.TERMINATED));
 
 
 		System.out.println("Program terminated!");
