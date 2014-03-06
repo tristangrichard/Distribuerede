@@ -3,7 +3,9 @@ import java.rmi.*;
 import java.rmi.server.*;
 public class AverageTemp extends UnicastRemoteObject implements RmiIntf {
 
+	private static final long serialVersionUID = 1L;
 	private TCP con;
+	
 	protected AverageTemp(TCP con) throws RemoteException {
 		super();
 		this.con = con;
